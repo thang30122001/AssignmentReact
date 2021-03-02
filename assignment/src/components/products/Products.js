@@ -27,16 +27,16 @@ function Products(){
         page,
     ]);
     const url = "https://601246c684695f0017779f0a.mockapi.io/my-products/";
-    useEffect(function () {
-      axios.get(url)
-        .then(function (response) {
-          const { data } = response;
-          setListSanPham(data);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    }, []);
+    // useEffect(function () {
+    //   axios.get(url)
+    //     .then(function (response) {
+    //       const { data } = response;
+    //       setListSanPham(data);
+    //     })
+    //     .catch(function (error) {
+    //       console.log(error);
+    //     });
+    // }, []);
      const onCreate =function(){
       axios.post(url,formData)
       .then(function (response){
@@ -126,24 +126,11 @@ function Products(){
            ListSanPham= {ListSanPham}
            btnUpdateOnclick={btnUpdateOnclick}
            btnOnClickDelete={btnOnClickDelete}
+           prevPage={prevPage}
+           nextPage={nextPage}
+           page={page}
            />
-           <br></br>
-            <ul class="pagination">
-                <li
-                    class="page-item"
-                    onClick={prevPage}>
-                    <a class="page-link" href="#">Trang Trước</a>
-                </li>
-                <li
-                    class="page-item">
-                    <a class="page-link" href="#">{page}</a>
-                </li>
-                <li
-                    class="page-item"
-                    onClick={nextPage}>
-                    <a class="page-link" href="#">Trang Sau</a>
-                </li>
-            </ul>
+          
       </div>
     );
 }
