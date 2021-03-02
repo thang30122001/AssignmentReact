@@ -26,39 +26,50 @@ function Categories() {
     ]);
     const url = "https://601246c684695f0017779f0a.mockapi.io/Categories/";
     const onCreate = function () {
-        if(formData.ten_sp==="" || Number(formData.so_luong)<=0 ){
+        if (formData.ten_sp === "") {
             alert("Thông tin không hợp lệ");
             return;
         }
-        axios.post(url, formData)
-            .then(function (response) {
-                const { data } = response;
-                setListDanhMuc([
-                    ...ListDanhMuc,
-                    data,
-                ]);
-                setFormData(formDataInit);
-            })
-            .catch(function (error) {
-                console.log(error);
-            })
+        else {
+            axios.post(url, formData)
+                .then(function (response) {
+                    const { data } = response;
+                    setListDanhMuc([
+                        ...ListDanhMuc,
+                        data,
+                    ]);
+                    setFormData(formDataInit);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+            alert("Lưu thành công");
+        }
     }
     const onUpdate = function () {
-        const url = "https://601246c684695f0017779f0a.mockapi.io/Categories/" + formData.id;
-        axios.put(url, formData)
-            .then(function (response) {
-                const { data } = response;
-                const list = ListDanhMuc.map(function (val, idx) {
-                    if (idx === clickRow) { return data;console.log(data); }
-                    else { return val; }
-                });
-                setListDanhMuc(list);
-                setClickRow(-1);
-                setFormData(formDataInit);
-            })
-            .catch(function (error) {
-                console.log(error);
-            })
+        if (formData.ten_sp === "") {
+            alert("Thông tin không hợp lệ");
+            return;
+        }
+        else {
+            const url = "https://601246c684695f0017779f0a.mockapi.io/Categories/" + formData.id;
+            axios.put(url, formData)
+                .then(function (response) {
+                    const { data } = response;
+                    const list = ListDanhMuc.map(function (val, idx) {
+                        if (idx === clickRow) { return data; console.log(data); }
+                        else { return val; }
+                    });
+                    setListDanhMuc(list);
+                    setClickRow(-1);
+                    setFormData(formDataInit);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+            alert("Cập nhật thành công");
+        }
+
     }
     const onSubmitHandler = function (event) {
         event.preventDefault();
@@ -80,6 +91,7 @@ function Categories() {
                     return idx === index ? false : true;
                 });
                 setListDanhMuc(list);
+                alert("Xóa thành công");
             })
             .catch(function (error) {
                 console.log(error);
@@ -92,6 +104,7 @@ function Categories() {
     }
     const btnUpdateOnclick = function (event, value, index) {
         setFormData(value);
+        console.log(value);
         setClickRow(index);
     }
 
@@ -102,6 +115,16 @@ function Categories() {
     const prevPage = function (event) {
         if (page == 1) { return; }
         setPage(page - 1);
+    }
+    const [filtername, setFilterName] = useState("");
+    const onFilter = function (event) {
+        const { name, value } = event.target;
+        setFilterName(value);
+    };
+    const [loai_sp, setCbxGia] = useState("0");
+    const onCbx = function (event) {
+        const { name, value } = event.target;
+        setCbxGia(value);
     }
     return (
         <div>
@@ -121,12 +144,12 @@ function Categories() {
                         </div>
                     </div>
 
-                    <div className="form-group row">
+                    {/* <div className="form-group row">
                         <label className="col-2 col-form-label">Số lượng</label>
                         <div className="col-10">
                             <input value={formData.so_luong} onChange={formInputOnchange} type="number" name="so_luong" className="form-control"></input>
                         </div>
-                    </div>
+                    </div> */}
                     <div className="form-group row">
                         <label className="col-2 col-form-label">Trạng thái</label>
                         <div className="col-10">
@@ -147,60 +170,80 @@ function Categories() {
             <div className=" mt-6 d-flex justify-content-center row">
                 <div className="col-2"></div>
                 <table className="table table-striped col-8">
-                    
+
                     <thead className="table-info">
                         <tr>
                             <td>Id</td>
                             <td>Tên SP</td>
-                            <td>Số lượng</td>
+                            {/* <td>Số lượng</td> */}
                             <td>Trạng thái</td>
                             <td>Thao tác</td>
                         </tr>
                     </thead>
-                    <tbody>{
-                        ListDanhMuc.map(function (value, index) {
-                            return (
-                                <tr key={index}>
-                                    <td>{value.id}</td>
-                                    <td>{value.ten_sp}</td>
-                                    <td>{value.so_luong}</td>
-                                    <td>{value.trang_thai=="true"?"Đang bán":"Ngừng bán"}</td>
-                                    <td>
-                                        <button onClick={function (event) {
-                                            btnUpdateOnclick(event, value, index);
-                                        }}
-                                            className="btn btn-primary">Cập nhật</button>
-                                        <button
-                                            className="btn btn-secondary ml-4"
-                                            onClick={function (event) {
-                                                btnOnClickDelete(event, value, index);
-                                            }}
-                                        >
-                                            Xóa</button>
-                                    </td>
-                                </tr>
-                            )
-                        })}
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td><input type="text" name="filtername" className="form-control" onChange={onFilter}></input></td>
+                            <td><select name="loai_sp" className="form-control" onChange={onCbx}>
+                                <option value='0'>Tất cả</option>
+                                <option value='1'>Iphone</option>
+                                <option value='2'>Samsung</option>
+                                <option value='3'>Oppo</option>
+                            </select></td>
+                            <td></td>
+                        </tr>{
+                            ListDanhMuc.filter((val, idx) => {
+                                return val.ten_sp.toLowerCase().indexOf(filtername) !== -1;
+                            })
+                                .filter((val, idx) => {
+                                    if (loai_sp === "0") { return true; }
+                                    else if (loai_sp === "1") { return val.ten_sp.toLowerCase().indexOf("iphone") !== -1; }
+                                    else if (loai_sp === "2") { return val.ten_sp.toLowerCase().indexOf("samsung") !== -1; }
+                                    else if (loai_sp === "3") { return val.ten_sp.toLowerCase().indexOf("oppo") !== -1; }
+                                })
+                                .map(function (value, index) {
+                                    return (
+                                        <tr key={index}>
+                                            <td>{value.id}</td>
+                                            <td>{value.ten_sp}</td>
+                                            {/* <td>{value.so_luong}</td> */}
+                                            <td>{value.trang_thai == "true" ? "Đang bán" : "Ngừng bán"}</td>
+                                            <td>
+                                                <button onClick={function (event) {
+                                                    btnUpdateOnclick(event, value, index);
+                                                }}
+                                                    className="btn btn-primary">Cập nhật</button>
+                                                <button
+                                                    className="btn btn-secondary ml-4"
+                                                    onClick={function (event) {
+                                                        btnOnClickDelete(event, value, index);
+                                                    }}
+                                                >
+                                                    Xóa</button>
+                                            </td>
+                                        </tr>
+                                    )
+                                })}
                     </tbody>
-                    
+
                 </table>
                 <div className="col-2"></div>
                 <ul className="pagination d-flex justify-content-center">
-                        <li
-                            className="page-item"
-                            onClick={prevPage}>
-                            <a className="page-link" href="#">Trang Trước</a>
-                        </li>
-                        <li
-                            className="page-item">
-                            <a className="page-link" href="#">{page}</a>
-                        </li>
-                        <li
-                            className="page-item"
-                            onClick={nextPage}>
-                            <a class="page-link" href="#">Trang Sau</a>
-                        </li>
-                    </ul>
+                    <li
+                        className="page-item"
+                        onClick={prevPage}>
+                        <a className="page-link" href="#">Trang Trước</a>
+                    </li>
+                    <li
+                        className="page-item">
+                        <a className="page-link" href="#">{page}</a>
+                    </li>
+                    <li
+                        className="page-item"
+                        onClick={nextPage}>
+                        <a class="page-link" href="#">Trang Sau</a>
+                    </li>
+                </ul>
             </div>
         </div>
     );

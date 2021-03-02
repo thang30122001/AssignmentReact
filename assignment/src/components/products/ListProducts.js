@@ -9,6 +9,12 @@ function ListProducts({ ListSanPham,
     const { name, value } = event.target;
     setFilterName(value);
   };
+  const [gia_sp, setCbxGia] = useState("0");
+  const onCbx = function (event) {
+    const { name, value } = event.target;
+    setCbxGia(value);
+    
+  }
   return (
     <div className=" mt-5 d-flex justify-content-center row">
 
@@ -26,7 +32,7 @@ function ListProducts({ ListSanPham,
           <tr>
             <td></td>
             <td><input type="text" name="filtername" className="form-control" onChange={onFilter}></input></td>
-            <td><select name="gia_san_pham" className="form-control">
+            <td><select name="gia_sp" className="form-control" onChange={onCbx}>
               <option value='0'>Tất cả</option>
               <option value='1'>{"0 => 10 triệu"}</option>
               <option value='2'>{"10 => 20 triệu"}</option>
@@ -39,6 +45,11 @@ function ListProducts({ ListSanPham,
             ListSanPham.filter((val, idx) => {
               return val.ten_san_pham.toLowerCase().indexOf(filtername) !== -1;
             })
+              .filter((val, idx) => {
+                if (gia_sp === "0") { return true; }
+                else if (gia_sp === "1") { return  0<= Number(val.gia_san_pham) && Number(val.gia_san_pham)< 10000000 }
+                else if (gia_sp === "2") { return 10000000 <=Number(val.gia_san_pham) && Number(val.gia_san_pham) <= 20000000 }
+              })
               .map(function (value, index) {
                 return (
                   <tr key={index}>
