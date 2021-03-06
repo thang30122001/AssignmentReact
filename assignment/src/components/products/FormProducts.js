@@ -21,7 +21,7 @@ function FormProducts({onSubmitHandler,
           </div>
 
           <div className="form-group row">
-            <label className="col-2 col-form-label">Giá SP</label>
+            <label className="col-2 col-form-label">Giá (VNĐ)</label>
             <div className="col-10">
               <input value={formData.gia_san_pham} onChange={formInputOnchange} type="number" name="gia_san_pham" className="form-control"></input>
             </div>

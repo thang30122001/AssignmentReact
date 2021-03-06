@@ -24,14 +24,14 @@ function ListProducts({ ListSanPham,
           <tr>
             <td>ID</td>
             <td>Tên SP</td>
-            <td>Giá SP</td>
+            <td>Giá (VNĐ)</td>
             <td>Thao tác</td>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td></td>
-            <td><input type="text" name="filtername" className="form-control" onChange={onFilter}></input></td>
+            <td><input placeholder="Tìm kiếm" type="text" name="filtername" className="form-control" onChange={onFilter}></input></td>
             <td><select name="gia_sp" className="form-control" onChange={onCbx}>
               <option value='0'>Tất cả</option>
               <option value='1'>{"0 => 10 triệu"}</option>

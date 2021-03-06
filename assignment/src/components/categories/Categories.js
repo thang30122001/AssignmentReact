@@ -183,7 +183,8 @@ function Categories() {
                     <tbody>
                         <tr>
                             <td></td>
-                            <td><input type="text" name="filtername" className="form-control" onChange={onFilter}></input></td>
+                            <td><input type="text" name="filtername" className="form-control" onChange={onFilter} placeholder="Tìm kiếm"></input></td>
+                            <td></td>
                             <td><select name="loai_sp" className="form-control" onChange={onCbx}>
                                 <option value='0'>Tất cả</option>
                                 <option value='1'>Iphone</option>
